@@ -502,10 +502,10 @@ package org.flixel
 		 */
 		protected function looped(event:Event=null):void
 		{
-		    if (_channel == null)
-		    	return;
-	        _channel.removeEventListener(Event.SOUND_COMPLETE,looped);
-	        _channel = null;
+			if (_channel == null)
+				return;
+			_channel.removeEventListener(Event.SOUND_COMPLETE,looped);
+			_channel = null;
 			play();
 		}
 
@@ -517,10 +517,10 @@ package org.flixel
 		protected function stopped(event:Event=null):void
 		{
 			if(!_looped)
-	        	_channel.removeEventListener(Event.SOUND_COMPLETE,stopped);
-	        else
-	        	_channel.removeEventListener(Event.SOUND_COMPLETE,looped);
-	        _channel = null;
+				_channel.removeEventListener(Event.SOUND_COMPLETE,stopped);
+			else
+				_channel.removeEventListener(Event.SOUND_COMPLETE,looped);
+			_channel = null;
 			active = false;
 			if(autoDestroy)
 				destroy();
