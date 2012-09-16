@@ -237,8 +237,7 @@ package org.flixel
 		override public function kill():void
 		{
 			super.kill();
-			if(_channel != null)
-				stop();
+			cleanup(false);
 		}
 		
 		/**
@@ -252,7 +251,7 @@ package org.flixel
 		 */
 		public function loadEmbedded(EmbeddedSound:Class, Looped:Boolean=false, AutoDestroy:Boolean=false):FlxSound
 		{
-			stop();
+			cleanup(true);
 			createSound();
 			_sound = new EmbeddedSound();
 			//NOTE: can't pull ID3 info from embedded sound currently
@@ -274,7 +273,7 @@ package org.flixel
 		 */
 		public function loadStream(SoundURL:String, Looped:Boolean=false, AutoDestroy:Boolean=false):FlxSound
 		{
-			stop();
+			cleanup(true);
 			createSound();
 			_sound = new Sound();
 			_sound.addEventListener(Event.ID3, gotID3);
@@ -319,10 +318,7 @@ package org.flixel
 				return;
 			if(ForceRestart)
 			{
-				var oldAutoDestroy:Boolean = autoDestroy;
-				autoDestroy = false;
-				stop();
-				autoDestroy = oldAutoDestroy;
+				cleanup(false);
 			}
 			if(_looped)
 			{
@@ -419,11 +415,7 @@ package org.flixel
 		public function stop():void
 		{
 			_position = 0;
-			if(_channel != null)
-			{
-				_channel.stop();
-				stopped();
-			}
+			cleanup(autoDestroy);
 		}
 		
 		/**
@@ -502,27 +494,39 @@ package org.flixel
 		 */
 		protected function looped(event:Event=null):void
 		{
-			if (_channel == null)
-				return;
-			_channel.removeEventListener(Event.SOUND_COMPLETE,looped);
-			_channel = null;
+			cleanup(false);
 			play();
 		}
 
 		/**
-		 * An internal helper function used to help Flash clean up and re-use finished sounds.
+		 * An internal helper function used to help Flash clean up finished sounds.
 		 * 
 		 * @param	event		An <code>Event</code> object.
 		 */
 		protected function stopped(event:Event=null):void
 		{
-			if(!_looped)
+			cleanup(autoDestroy);
+		}
+		
+		/**
+		 * An internal helper function used to help Flash clean up (and potentially re-use) finished sounds.
+		 * 
+		 * @param	destroySound		Whether or not to destroy the sound 
+		 */
+		protected function cleanup(destroySound:Boolean):void
+		{
+			if (_channel)
+			{
 				_channel.removeEventListener(Event.SOUND_COMPLETE,stopped);
-			else
 				_channel.removeEventListener(Event.SOUND_COMPLETE,looped);
-			_channel = null;
+				_channel.stop();
+				_channel = null;
+			}
+			
+			_position = 0;
 			active = false;
-			if(autoDestroy)
+			
+			if (destroySound)
 				destroy();
 		}
 		
