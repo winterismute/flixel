@@ -300,17 +300,17 @@ package org.flixel
 		 * 
 		 * @param	X		The X position of the sound.
 		 * @param	Y		The Y position of the sound.
-		 * @param	Object	The object you want to track.
+		 * @param	TargetObject	The object you want to track.
 		 * @param	Radius	The maximum distance this sound can travel.
 		 * @param	Pan		Whether the sound should pan in addition to the volume changes (default: true).
 		 * 
 		 * @return	This FlxSound instance (nice for chaining stuff together, if you're into that).
 		 */
-		public function proximity(X:Number,Y:Number,Object:FlxObject,Radius:Number,Pan:Boolean=true):FlxSound
+		public function proximity(X:Number,Y:Number,TargetObject:FlxObject,Radius:Number,Pan:Boolean=true):FlxSound
 		{
 			x = X;
 			y = Y;
-			_target = Object;
+			_target = TargetObject;
 			_radius = Radius;
 			_pan = Pan;
 			return this;
