@@ -398,11 +398,7 @@ package org.flixel
 			}
 			_position = _channel.position;
 			_channel.stop();
-			if(_looped)
-			{
-				while(_position >= _sound.length)
-					_position -= _sound.length;
-			}
+			
 			if(_position <= 0)
 				_position = 1;
 			_channel = null;
