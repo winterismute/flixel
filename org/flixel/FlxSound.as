@@ -65,6 +65,10 @@ package org.flixel
 		 */
 		protected var _transform:SoundTransform;
 		/**
+		 * Internal tracker for whether the sound is paused or not (not the same as stopped).
+		 */
+		protected var _paused:Boolean;
+		/**
 		 * Internal tracker for the position in runtime of the music playback.
 		 */
 		protected var _position:Number;
@@ -135,6 +139,7 @@ package org.flixel
 			_transform.pan = 0;
 			_sound = null;
 			_position = 0;
+			_paused = false;
 			_volume = 1.0;
 			_volumeAdjust = 1.0;
 			_looped = false;
@@ -166,6 +171,8 @@ package org.flixel
 
 			_transform = null;
 			_sound = null;
+			exists = false;
+			active = false;
 			_channel = null;
 			_target = null;
 			name = null;
@@ -179,8 +186,10 @@ package org.flixel
 		 */
 		override public function update():void
 		{
-			if(_position != 0)
+			if(_paused)
 				return;
+			
+			_position = _channel.position;
 			
 			var radial:Number = 1.0;
 			var fade:Number = 1.0;
@@ -314,76 +323,32 @@ package org.flixel
 		 */
 		public function play(ForceRestart:Boolean=false):void
 		{
-			if(_position < 0)
+			if(!exists)
 				return;
+		
 			if(ForceRestart)
 			{
-				cleanup(false);
-			}
-			if(_looped)
+				cleanup(false, true);
+			} 
+			else if(_channel != null)
 			{
-				if(_position == 0)
-				{
-					if(_channel == null)
-						_channel = _sound.play(0,9999,_transform);
-					if(_channel == null)
-						exists = false;
-				}
-				else
-				{
-					_channel = _sound.play(_position,0,_transform);
-					if(_channel == null)
-						exists = false;
-					else
-						_channel.addEventListener(Event.SOUND_COMPLETE, looped);
-				}
+				// Already playing sound
+				return;
 			}
+			
+			if (_paused)
+				startSound(_position);
 			else
-			{
-				if(_position == 0)
-				{
-					if(_channel == null)
-					{
-						_channel = _sound.play(0,0,_transform);
-						if(_channel == null)
-							exists = false;
-						else
-							_channel.addEventListener(Event.SOUND_COMPLETE, stopped);
-					}
-				}
-				else
-				{
-					_channel = _sound.play(_position,0,_transform);
-					if(_channel == null)
-						exists = false;
-				}
-			}
-			active = (_channel != null);
-			_position = 0;
+				startSound(0);
 		}
 		
 		/**
-		 * Unpause a sound.  Only works on sounds that have been paused.
+		 * Unpause a sound. Only works on sounds that have been paused.
 		 */
 		public function resume():void
 		{
-			if(_position <= 0)
-				return;
-			if(_looped)
-			{
-				_channel = _sound.play(_position,0,_transform);
-				if(_channel == null)
-					exists = false;
-				else
-					_channel.addEventListener(Event.SOUND_COMPLETE, looped);
-			}
-			else
-			{
-				_channel = _sound.play(_position,0,_transform);
-				if(_channel == null)
-					exists = false;
-			}
-			active = (_channel != null);
+			if (_paused)
+				startSound(_position);
 		}
 		
 		/**
@@ -392,17 +357,11 @@ package org.flixel
 		public function pause():void
 		{
 			if(_channel == null)
-			{
-				_position = -1;
 				return;
-			}
-			_position = _channel.position;
-			_channel.stop();
 			
-			if(_position <= 0)
-				_position = 1;
-			_channel = null;
-			active = false;
+			_position = _channel.position;
+			_paused = true;
+			cleanup(false, false);
 		}
 		
 		/**
@@ -410,8 +369,7 @@ package org.flixel
 		 */
 		public function stop():void
 		{
-			_position = 0;
-			cleanup(autoDestroy);
+			cleanup(autoDestroy, true);
 		}
 		
 		/**
@@ -484,24 +442,41 @@ package org.flixel
 		}
 		
 		/**
-		 * An internal helper function used to help Flash resume playing a looped sound.
-		 * 
-		 * @param	event		An <code>Event</code> object.
+		 * An internal helper function used to attempt to start playing the sound and populate the `_channel` variable.
 		 */
-		protected function looped(event:Event=null):void
+		protected function startSound(Position:Number):void
 		{
-			cleanup(false);
-			play();
+			_position = Position;
+			_paused = false;
+			_channel = _sound.play(_position, (_looped ? 9999 : 0), _transform);
+			if(_channel != null)
+			{
+				_channel.addEventListener(Event.SOUND_COMPLETE, stopped);
+				active = true;
+			}
+			else
+			{
+				exists = false;
+				active = false;
+			}
 		}
-
+		
 		/**
-		 * An internal helper function used to help Flash clean up finished sounds.
+		 * An internal helper function used to help Flash clean up finished sounds or restart looped sounds.
 		 * 
 		 * @param	event		An <code>Event</code> object.
 		 */
 		protected function stopped(event:Event=null):void
 		{
-			cleanup(autoDestroy);
+			if (_looped)
+			{
+				cleanup(false);
+				play();	
+			}
+			else
+			{
+				cleanup(autoDestroy);
+			}
 		}
 		
 		/**
@@ -509,17 +484,21 @@ package org.flixel
 		 * 
 		 * @param	destroySound		Whether or not to destroy the sound 
 		 */
-		protected function cleanup(destroySound:Boolean):void
+		protected function cleanup(destroySound:Boolean, resetPosition:Boolean = true):void
 		{
 			if (_channel)
 			{
 				_channel.removeEventListener(Event.SOUND_COMPLETE,stopped);
-				_channel.removeEventListener(Event.SOUND_COMPLETE,looped);
 				_channel.stop();
 				_channel = null;
 			}
 			
-			_position = 0;
+			if (resetPosition)
+			{
+				_position = 0;
+				_paused = false;
+			}
+			
 			active = false;
 			
 			if (destroySound)
