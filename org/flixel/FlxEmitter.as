@@ -123,7 +123,7 @@ package org.flixel
 			minRotation = -360;
 			maxRotation = 360;
 			gravity = 0;
-			particleClass = null;
+			particleClass = FlxParticle;
 			particleDrag = new FlxPoint();
 			frequency = 0.1;
 			lifespan = 3;
@@ -177,10 +177,7 @@ package org.flixel
 			var i:uint = 0;
 			while(i < Quantity)
 			{
-				if(particleClass == null)
-					particle = new FlxParticle();
-				else
-					particle = new particleClass();
+				particle = new particleClass();
 				if(Multiple)
 				{
 					randomFrame = FlxG.random()*totalFrames;
@@ -290,7 +287,7 @@ package org.flixel
 		 */
 		public function emitParticle():void
 		{
-			var particle:FlxParticle = recycle(FlxParticle) as FlxParticle;
+			var particle:FlxParticle = recycle(particleClass) as FlxParticle;
 			particle.lifespan = lifespan;
 			particle.elasticity = bounce;
 			particle.reset(x - (particle.width>>1) + FlxG.random()*width, y - (particle.height>>1) + FlxG.random()*height);
