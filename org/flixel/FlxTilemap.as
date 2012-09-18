@@ -125,27 +125,13 @@ package org.flixel
 		public function FlxTilemap()
 		{
 			super();
-			auto = OFF;
-			widthInTiles = 0;
-			heightInTiles = 0;
-			totalTiles = 0;
 			_buffers = new Array();
 			_flashPoint = new Point();
-			_flashRect = null;
-			_data = null;
-			_tileWidth = 0;
-			_tileHeight = 0;
-			_rects = null;
-			_tiles = null;
-			_tileObjects = null;
 			immovable = true;
-			cameras = null;
-			_debugTileNotSolid = null;
-			_debugTilePartial = null;
-			_debugTileSolid = null;
-			_debugRect = null;
+			moves = false;
+			active = false;
+			visible = false;
 			_lastVisualDebug = FlxG.visualDebug;
-			_startingIndex = 0;
 		}
 		
 		/**
@@ -153,19 +139,12 @@ package org.flixel
 		 */
 		override public function destroy():void
 		{
+			clearTilemap();
+			_tileObjects = null;
+			_buffers = null;
 			_flashPoint = null;
 			_flashRect = null;
 			_tiles = null;
-			var i:uint = 0;
-			var l:uint = _tileObjects.length;
-			while(i < l)
-				(_tileObjects[i++] as FlxTile).destroy();
-			_tileObjects = null;
-			i = 0;
-			l = _buffers.length;
-			while(i < l)
-				(_buffers[i++] as FlxTilemapBuffer).destroy();
-			_buffers = null;
 			_data = null;
 			_rects = null;
 			_debugTileNotSolid = null;
@@ -174,6 +153,40 @@ package org.flixel
 			_debugRect = null;
 
 			super.destroy();
+		}
+		
+		/**
+		 * An internal function for clearing all the variables used by the tilemap.
+		 */
+		protected function clearTilemap():void
+		{
+			widthInTiles = 0;
+			heightInTiles = 0;
+			totalTiles = 0;
+			_data = null;
+			_tileWidth = 0;
+			_tileHeight = 0;
+			_rects = null;
+			_tiles = null;
+			
+			var i:uint;
+			var l:uint
+			if(_tileObjects != null)
+			{
+				i = 0;
+				l = _tileObjects.length;
+				while(i < l)
+					(_tileObjects[i++] as FlxTile).destroy();
+				_tileObjects.length = 0;
+			}
+			if(_buffers != null)
+			{
+				i = 0;
+				l = _buffers.length;
+				while(i < l)
+					(_buffers[i++] as FlxTilemapBuffer).destroy();
+				_buffers.length = 0;
+			}
 		}
 		
 		/**
@@ -192,12 +205,15 @@ package org.flixel
 		 */
 		public function loadMap(MapData:String, TileGraphic:Class, TileWidth:uint=0, TileHeight:uint=0, AutoTile:uint=OFF, StartingIndex:uint=0, DrawIndex:uint=1, CollideIndex:uint=1):FlxTilemap
 		{
+			clearTilemap();
+			
 			auto = AutoTile;
 			_startingIndex = StartingIndex;
 
 			//Figure out the map dimensions based on the data string
 			var columns:Array;
 			var rows:Array = MapData.split("\n");
+			widthInTiles = 0;
 			heightInTiles = rows.length;
 			_data = new Array();
 			var row:uint = 0;
@@ -265,7 +281,10 @@ package org.flixel
 			i = 0;
 			while(i < totalTiles)
 				updateTile(i++);
-
+			
+			active = true;
+			visible = true;
+				
 			return this;
 		}
 		
