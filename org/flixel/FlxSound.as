@@ -192,6 +192,8 @@ package org.flixel
 				if(radial < 0) radial = 0;
 				if(radial > 1) radial = 1;
 				
+				radial = 1 - radial;
+				
 				if(_pan)
 				{
 					var d:Number = (_target.x-x)/_radius;
