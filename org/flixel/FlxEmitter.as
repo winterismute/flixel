@@ -177,7 +177,14 @@ package org.flixel
 			var i:uint = 0;
 			while(i < Quantity)
 			{
-				particle = new particleClass();
+				particle = new particleClass() as FlxParticle;
+				
+				if(particle == null)
+				{	
+					FlxG.log("ERROR: particleClass must extend FlxParticle");
+					return this;
+				}
+				
 				if(Multiple)
 				{
 					randomFrame = FlxG.random()*totalFrames;
@@ -288,6 +295,13 @@ package org.flixel
 		public function emitParticle():void
 		{
 			var particle:FlxParticle = recycle(particleClass) as FlxParticle;
+			
+			if(particle == null)
+			{
+				FlxG.log("ERROR: particleClass must extend FlxParticle");
+				return;
+			}
+				
 			particle.lifespan = lifespan;
 			particle.elasticity = bounce;
 			particle.reset(x - (particle.width>>1) + FlxG.random()*width, y - (particle.height>>1) + FlxG.random()*height);
