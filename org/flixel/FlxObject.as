@@ -688,11 +688,14 @@ package org.flixel
 			{
 				var results:Boolean = false;
 				var i:uint = 0;
-				var members:Array = (ObjectOrGroup as FlxGroup).members;
+				var group:FlxGroup = ObjectOrGroup as FlxGroup; 
+				var members:Array = group.members;
+				var length:uint = group.length;
 				while(i < length)
 				{
-					if(overlaps(members[i++],InScreenSpace,Camera))
+					if(members[i] && overlaps(members[i],InScreenSpace,Camera))
 						results = true;
+					i++;
 				}
 				return results;
 			}
@@ -739,11 +742,14 @@ package org.flixel
 				var results:Boolean = false;
 				var basic:FlxBasic;
 				var i:uint = 0;
-				var members:Array = (ObjectOrGroup as FlxGroup).members;
+				var group:FlxGroup = ObjectOrGroup as FlxGroup; 
+				var members:Array = group.members;
+				var length:uint = group.length;
 				while(i < length)
 				{
-					if(overlapsAt(X,Y,members[i++],InScreenSpace,Camera))
+					if(members[i] && overlapsAt(X,Y,members[i],InScreenSpace,Camera))
 						results = true;
+					i++;
 				}
 				return results;
 			}
