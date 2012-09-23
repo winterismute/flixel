@@ -78,11 +78,6 @@ package org.flixel
 		 */
 		public var bounce:Number;
 		/**
-		 * Set your own particle class type here.
-		 * Default is <code>FlxParticle</code>.
-		 */
-		public var particleClass:Class;
-		/**
 		 * Internal helper for deciding how many particles to launch.
 		 */
 		protected var _quantity:uint;
@@ -123,7 +118,6 @@ package org.flixel
 			minRotation = -360;
 			maxRotation = 360;
 			gravity = 0;
-			particleClass = FlxParticle;
 			particleDrag = new FlxPoint();
 			frequency = 0.1;
 			lifespan = 3;
@@ -178,12 +172,6 @@ package org.flixel
 			while(i < Quantity)
 			{
 				particle = new particleClass() as FlxParticle;
-				
-				if(particle == null)
-				{	
-					FlxG.log("ERROR: particleClass must extend FlxParticle");
-					return this;
-				}
 				
 				if(Multiple)
 				{
@@ -295,13 +283,6 @@ package org.flixel
 		public function emitParticle():void
 		{
 			var particle:FlxParticle = recycle(particleClass) as FlxParticle;
-			
-			if(particle == null)
-			{
-				FlxG.log("ERROR: particleClass must extend FlxParticle");
-				return;
-			}
-				
 			particle.lifespan = lifespan;
 			particle.elasticity = bounce;
 			particle.reset(x - (particle.width>>1) + FlxG.random()*width, y - (particle.height>>1) + FlxG.random()*height);
@@ -327,6 +308,32 @@ package org.flixel
 			particle.drag.x = particleDrag.x;
 			particle.drag.y = particleDrag.y;
 			particle.onEmit();
+		}
+		
+		/**
+		 * Internal variable for tracking the class to create when generating particles.
+		 */
+		protected var _particleClass:Class;
+		
+		/**
+		 * Set your own particle class type here.
+		 * Default is <code>FlxParticle</code>.
+		 */
+		public function get particleClass():Class
+		{
+			return _particleClass || FlxParticle;
+		}
+		public function set particleClass(value:Class):void
+		{
+			var testParticle:* = new value();
+			if (testParticle is FlxParticle)
+			{
+				_particleClass = value;
+			}
+			else
+			{
+				FlxG.log("ERROR: `" + getQualifiedClassName(testParticle) "` must extend `FlxParticle` in order to be used in a FlxEmitter.");
+			}
 		}
 		
 		/**
