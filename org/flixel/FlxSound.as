@@ -97,25 +97,21 @@ package org.flixel
 		 */
 		protected var _pan:Boolean;
 		/**
-		 * Internal timer used to keep track of requests to fade out the sound playback.
-		 */
-		protected var _fadeOutTimer:Number;
-		/**
-		 * Internal helper for fading out sounds.
-		 */
-		protected var _fadeOutTotal:Number;
-		/**
-		 * Internal flag for whether to pause or stop the sound when it's done fading out.
-		 */
-		protected var _pauseOnFadeOut:Boolean;
-		/**
 		 * Internal timer for fading in the sound playback.
 		 */
 		protected var _fadeInTimer:Number;
 		/**
-		 * Internal helper for fading in sounds.
+		 * Internal timer used to keep track of requests to fade out the sound playback.
 		 */
-		protected var _fadeInTotal:Number;
+		protected var _fadeOutTimer:Number;
+		/**
+		 * Internal helper for fading sounds.
+		 */
+		protected var _fadeTotal:Number;
+		/**
+		 * Internal flag for whether to pause or stop the sound when it's done fading out.
+		 */
+		protected var _pauseOnFadeOut:Boolean;
 		
 		/**
 		 * The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet.
@@ -146,11 +142,10 @@ package org.flixel
 			_target = null;
 			_radius = 0;
 			_pan = false;
-			_fadeOutTimer = 0;
-			_fadeOutTotal = 0;
-			_pauseOnFadeOut = false;
 			_fadeInTimer = 0;
-			_fadeInTotal = 0;
+			_fadeOutTimer = 0;
+			_fadeTotal = 0;
+			_pauseOnFadeOut = false;
 			exists = false;
 			active = false;
 			visible = false;
@@ -223,13 +218,13 @@ package org.flixel
 					else
 						stop();
 				}
-				fade = _fadeOutTimer/_fadeOutTotal;
+				fade = _fadeOutTimer/_fadeTotal;
 				if(fade < 0) fade = 0;
 			}
 			else if(_fadeInTimer > 0)
 			{
 				_fadeInTimer -= FlxG.elapsed;
-				fade = _fadeInTimer/_fadeInTotal;
+				fade = _fadeInTimer/_fadeTotal;
 				if(fade < 0) fade = 0;
 				fade = 1 - fade;
 			}
@@ -385,7 +380,7 @@ package org.flixel
 			_pauseOnFadeOut = PauseInstead;
 			_fadeInTimer = 0;
 			_fadeOutTimer = Seconds;
-			_fadeOutTotal = _fadeOutTimer;
+			_fadeTotal = _fadeOutTimer;
 		}
 		
 		/**
@@ -398,7 +393,7 @@ package org.flixel
 		{
 			_fadeOutTimer = 0;
 			_fadeInTimer = Seconds;
-			_fadeInTotal = _fadeInTimer;
+			_fadeTotal = _fadeInTimer;
 			play();
 		}
 		
