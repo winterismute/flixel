@@ -217,9 +217,14 @@ package org.flixel
 						pause();
 					else
 						stop();
+						
+					fade = 1.0;
 				}
-				fade = _fadeOutTimer/_fadeTotal;
-				if(fade < 0) fade = 0;
+				else
+				{
+					fade = _fadeOutTimer/_fadeTotal;
+					if(fade < 0) fade = 0;
+				}
 			}
 			else if(_fadeInTimer > 0)
 			{
@@ -497,6 +502,11 @@ package org.flixel
 			}
 			
 			active = false;
+			
+			_fadeInTimer = 0;
+			_fadeOutTimer = 0;
+			_fadeTotal = 0;
+			_pauseOnFadeOut = false;
 			
 			if (destroySound)
 				destroy();
