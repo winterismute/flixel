@@ -339,7 +339,7 @@ package org.flixel
 			}
 			
 			if (_paused)
-				startSound(_position);
+				resume();
 			else
 				startSound(0);
 		}
