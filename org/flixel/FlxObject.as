@@ -688,14 +688,18 @@ package org.flixel
 			{
 				var results:Boolean = false;
 				var i:uint = 0;
+				var basic:FlxBasic;
 				var group:FlxGroup = ObjectOrGroup as FlxGroup; 
 				var members:Array = group.members;
 				var length:uint = group.length;
 				while(i < length)
 				{
-					if(members[i] && overlaps(members[i],InScreenSpace,Camera))
+					basic = members[i++] as FlxBasic;
+					if (basic != null && basic.exists && overlaps(basic,InScreenSpace,Camera))
+					{
 						results = true;
-					i++;
+						break;
+					}
 				}
 				return results;
 			}
@@ -747,9 +751,12 @@ package org.flixel
 				var length:uint = group.length;
 				while(i < length)
 				{
-					if(members[i] && overlapsAt(X,Y,members[i],InScreenSpace,Camera))
+					basic = members[i++] as FlxBasic;
+					if(basic != null && basic.exists && overlapsAt(X,Y,basic,InScreenSpace,Camera))
+					{
 						results = true;
-					i++;
+						break;
+					}
 				}
 				return results;
 			}
