@@ -97,6 +97,11 @@ package org.flixel
 		 * Internal point object, handy for reusing for memory mgmt purposes.
 		 */
 		protected var _point:FlxPoint;
+		/**
+		 * Internal variable for tracking the class to create when generating particles.
+		 */
+		protected var _particleClass:Class;
+		
 		
 		/**
 		 * Creates a new <code>FlxEmitter</code> object at a specific position.
@@ -118,6 +123,7 @@ package org.flixel
 			minRotation = -360;
 			maxRotation = 360;
 			gravity = 0;
+			_particleClass = FlxParticle;
 			particleDrag = new FlxPoint();
 			frequency = 0.1;
 			lifespan = 3;
@@ -311,28 +317,24 @@ package org.flixel
 		}
 		
 		/**
-		 * Internal variable for tracking the class to create when generating particles.
-		 */
-		protected var _particleClass:Class;
-		
-		/**
 		 * Set your own particle class type here.
 		 * Default is <code>FlxParticle</code>.
 		 */
 		public function get particleClass():Class
 		{
-			return _particleClass || FlxParticle;
+			return _particleClass;
 		}
+		
 		public function set particleClass(value:Class):void
 		{
-			var testParticle:* = new value();
-			if (testParticle is FlxParticle)
+			var testParticle:FlxParticle = new value() as FlxParticle;
+			if (testParticle != null)
 			{
 				_particleClass = value;
 			}
 			else
 			{
-				FlxG.log("ERROR: `" + getQualifiedClassName(testParticle) "` must extend `FlxParticle` in order to be used in a FlxEmitter.");
+				FlxG.log("ERROR: " + value + " must extend FlxParticle in order to be used in a FlxEmitter.");
 			}
 		}
 		
