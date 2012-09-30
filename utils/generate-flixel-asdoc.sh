@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 # NOTE: These variables are relative to where you are calling the script from,
 #	NOT the location of the script!
