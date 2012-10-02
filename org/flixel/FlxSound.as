@@ -237,12 +237,18 @@ package org.flixel
 			_volumeAdjust = radial*fade;
 			updateTransform();
 			
-			if((_transform.volume > 0) && (_channel != null))
+			if(_transform.volume > 0)
 			{
 				amplitudeLeft = _channel.leftPeak/_transform.volume;
 				amplitudeRight = _channel.rightPeak/_transform.volume;
 				amplitude = (amplitudeLeft+amplitudeRight)*0.5;
 			}
+			else
+			{
+				amplitudeLeft = 0;
+				amplitudeRight = 0;
+				amplitude = 0;			
+			}			
 		}
 		
 		override public function kill():void
