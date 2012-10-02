@@ -181,7 +181,7 @@ package org.flixel
 		 */
 		override public function update():void
 		{
-			if(_paused)
+			if(!playing)
 				return;
 			
 			_position = _channel.position;
@@ -338,9 +338,8 @@ package org.flixel
 			{
 				cleanup(false, true);
 			} 
-			else if(_channel != null)
+			else if(playing)
 			{
-				// Already playing sound
 				return;
 			}
 			
@@ -364,7 +363,7 @@ package org.flixel
 		 */
 		public function pause():void
 		{
-			if(_channel == null)
+			if(!playing)
 				return;
 			
 			_position = _channel.position;
@@ -406,6 +405,11 @@ package org.flixel
 			_fadeInTimer = Seconds;
 			_fadeTotal = _fadeInTimer;
 			play();
+		}
+		
+		public function get playing():Boolean
+		{
+			return (_channel != null);
 		}
 		
 		/**
