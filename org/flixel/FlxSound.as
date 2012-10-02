@@ -387,6 +387,9 @@ package org.flixel
 		 */
 		public function fadeOut(Seconds:Number,PauseInstead:Boolean=false):void
 		{
+			if (!playing)
+				{ return; }
+		
 			_pauseOnFadeOut = PauseInstead;
 			_fadeInTimer = 0;
 			_fadeOutTimer = Seconds;
@@ -401,6 +404,9 @@ package org.flixel
 		 */
 		public function fadeIn(Seconds:Number):void
 		{
+			if (playing)
+				{ return; }
+		
 			_fadeOutTimer = 0;
 			_fadeInTimer = Seconds;
 			_fadeTotal = _fadeInTimer;
