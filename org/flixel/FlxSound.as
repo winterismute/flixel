@@ -336,7 +336,7 @@ package org.flixel
 		
 			if(ForceRestart)
 			{
-				cleanup(false, true);
+				cleanup(false, true, true);
 			} 
 			else if(playing)
 			{
@@ -368,7 +368,7 @@ package org.flixel
 			
 			_position = _channel.position;
 			_paused = true;
-			cleanup(false, false);
+			cleanup(false, false, false);
 		}
 		
 		/**
@@ -376,7 +376,7 @@ package org.flixel
 		 */
 		public function stop():void
 		{
-			cleanup(autoDestroy, true);
+			cleanup(autoDestroy, true, true);
 		}
 		
 		/**
@@ -502,7 +502,7 @@ package org.flixel
 		 * 
 		 * @param	destroySound		Whether or not to destroy the sound 
 		 */
-		protected function cleanup(destroySound:Boolean, resetPosition:Boolean = true):void
+		protected function cleanup(destroySound:Boolean, resetPosition:Boolean = true, resetFading:Boolean = true):void
 		{
 			if (_channel)
 			{
@@ -511,18 +511,21 @@ package org.flixel
 				_channel = null;
 			}
 			
+			active = false;
+			
 			if (resetPosition)
 			{
 				_position = 0;
 				_paused = false;
 			}
 			
-			active = false;
-			
-			_fadeInTimer = 0;
-			_fadeOutTimer = 0;
-			_fadeTotal = 0;
-			_pauseOnFadeOut = false;
+			if (resetFading)
+			{
+				_fadeInTimer = 0;
+				_fadeOutTimer = 0;
+				_fadeTotal = 0;
+				_pauseOnFadeOut = false;
+			}
 			
 			if (destroySound)
 				destroy();
