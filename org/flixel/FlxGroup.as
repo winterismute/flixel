@@ -565,6 +565,12 @@ package org.flixel
 		 */
 		protected function sortHandler(Obj1:FlxBasic,Obj2:FlxBasic):int
 		{
+			// If the sorting property is missing, place the object at the end of the list.
+			if(!Obj1.hasOwnProperty(_sortIndex))
+				return 1;
+			else if(!Obj2.hasOwnProperty(_sortIndex))
+				return -1;
+			
 			if(Obj1[_sortIndex] < Obj2[_sortIndex])
 				return _sortOrder;
 			else if(Obj1[_sortIndex] > Obj2[_sortIndex])
