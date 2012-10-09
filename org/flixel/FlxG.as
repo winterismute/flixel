@@ -848,6 +848,7 @@ package org.flixel
 		{
 			try
 			{
+				FlxG.cameras.splice(FlxG.cameras.indexOf(Camera), 1);
 				FlxG._game.removeChild(Camera._flashSprite);
 			}
 			catch(E:Error)
