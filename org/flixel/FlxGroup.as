@@ -559,7 +559,7 @@ package org.flixel
 		}
 		
 		/**
-		 * Calls revive on the group itself and then on thegroup's members.
+		 * Calls revive on the group itself and then on the group's members.
 		 */
 		override public function revive():void
 		{
@@ -571,7 +571,7 @@ package org.flixel
 			while(i < length)
 			{
 				basic = members[i++] as FlxBasic;
-				if((basic != null) && basic.exists)
+				if((basic != null) && !basic.exists)
 					basic.revive();
 			}
 		}
