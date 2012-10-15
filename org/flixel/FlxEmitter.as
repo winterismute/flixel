@@ -143,7 +143,7 @@ package org.flixel
 			minParticleSpeed = null;
 			maxParticleSpeed = null;
 			particleDrag = null;
-			particleClass = null;
+			_particleClass = null;
 			_point = null;
 			super.destroy();
 		}
