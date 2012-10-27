@@ -571,7 +571,7 @@ package org.flixel
 			while(i < length)
 			{
 				basic = members[i++] as FlxBasic;
-				if((basic != null) && !basic.exists)
+				if((basic != null) && !basic.alive)
 					basic.revive();
 			}
 		}
