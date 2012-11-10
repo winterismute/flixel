@@ -97,21 +97,13 @@ package org.flixel
 		 */
 		protected var _pan:Boolean;
 		/**
-		 * Internal timer for fading in the sound playback.
-		 */
-		protected var _fadeInTimer:Number;
-		/**
-		 * Internal timer used to keep track of requests to fade out the sound playback.
-		 */
-		protected var _fadeOutTimer:Number;
-		/**
 		 * Internal helper for fading sounds.
 		 */
-		protected var _fadeTotal:Number;
+		protected var _fade:FlxTween;
 		/**
-		 * Internal flag for whether to pause or stop the sound when it's done fading out.
+		 * Internal flag for what to do when the sound is done fading out.
 		 */
-		protected var _pauseOnFadeOut:Boolean;
+		protected var _onFadeComplete:Boolean;
 		
 		/**
 		 * The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet.
@@ -142,10 +134,8 @@ package org.flixel
 			_target = null;
 			_radius = 0;
 			_pan = false;
-			_fadeInTimer = 0;
-			_fadeOutTimer = 0;
-			_fadeTotal = 0;
-			_pauseOnFadeOut = false;
+			_fade = null;
+			_onFadeComplete = null;
 			exists = false;
 			active = false;
 			visible = false;
@@ -186,17 +176,17 @@ package org.flixel
 			
 			_position = _channel.position;
 			
-			var radial:Number = 1.0;
-			var fade:Number = 1.0;
+			var radialMultiplier:Number = 1.0;
+			var fadeMultiplier:Number = 1.0;
 			
 			//Distance-based volume control
 			if(_target != null)
 			{
-				radial = FlxU.getDistance(new FlxPoint(_target.x,_target.y),new FlxPoint(x,y))/_radius;
-				if(radial < 0) radial = 0;
-				if(radial > 1) radial = 1;
+				radialMultiplier = FlxU.getDistance(new FlxPoint(_target.x,_target.y),new FlxPoint(x,y))/_radius;
+				if(radialMultiplier < 0) radialMultiplier = 0;
+				if(radialMultiplier > 1) radialMultiplier = 1;
 				
-				radial = 1 - radial;
+				radialMultiplier = 1 - radialMultiplier;
 				
 				if(_pan)
 				{
@@ -208,33 +198,19 @@ package org.flixel
 			}
 			
 			//Cross-fading volume control
-			if(_fadeOutTimer > 0)
+			if(_fade)
 			{
-				_fadeOutTimer -= FlxG.elapsed;
-				if(_fadeOutTimer <= 0)
+				_fade.progress += FlxG.elapsed;
+				fadeMultiplier = _fade.value;
+				
+				if (_fade.finished)
 				{
-					if(_pauseOnFadeOut)
-						pause();
-					else
-						stop();
-						
-					fade = 1.0;
+					_fade = null;
+					if (_onFadeComplete != null) { _onFadeComplete.call(); }
 				}
-				else
-				{
-					fade = _fadeOutTimer/_fadeTotal;
-					if(fade < 0) fade = 0;
-				}
-			}
-			else if(_fadeInTimer > 0)
-			{
-				_fadeInTimer -= FlxG.elapsed;
-				fade = _fadeInTimer/_fadeTotal;
-				if(fade < 0) fade = 0;
-				fade = 1 - fade;
 			}
 			
-			_volumeAdjust = radial*fade;
+			_volumeAdjust = radialMultiplier*fadeMultiplier;
 			updateTransform();
 			
 			if(_transform.volume > 0)
@@ -389,11 +365,10 @@ package org.flixel
 		{
 			if (!playing)
 				{ return; }
-		
-			_pauseOnFadeOut = PauseInstead;
-			_fadeInTimer = 0;
-			_fadeOutTimer = Seconds;
-			_fadeTotal = _fadeOutTimer;
+			
+			var fadeStartVolume:Number = (_fade ? _fade.value : 1);
+			_fade = new FlxTween(fadeStartVolume, 0, Seconds);
+			_onFadeComplete = (PauseInstead ? pause : stop);
 		}
 		
 		/**
@@ -404,12 +379,13 @@ package org.flixel
 		 */
 		public function fadeIn(Seconds:Number):void
 		{
-			if (playing)
+			if (playing && (!_fade))
 				{ return; }
 		
-			_fadeOutTimer = 0;
-			_fadeInTimer = Seconds;
-			_fadeTotal = _fadeInTimer;
+			var fadeStartVolume:Number = (_fade ? _fade.value : 0);
+			_fade = new FlxTween(fadeStartVolume, 1, Seconds);
+			_onFadeComplete = null;
+			
 			play();
 		}
 		
@@ -521,10 +497,8 @@ package org.flixel
 			
 			if (resetFading)
 			{
-				_fadeInTimer = 0;
-				_fadeOutTimer = 0;
-				_fadeTotal = 0;
-				_pauseOnFadeOut = false;
+				_fade = null;
+				_onFadeComplete = null;
 			}
 			
 			if (destroySound)
