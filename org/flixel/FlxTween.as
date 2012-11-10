@@ -22,7 +22,7 @@ package org.flixel
 		 */
 		public function FlxTween(StartValue:Number, EndValue:Number, Duration:Number, Ease:Function = null)
 		{
-			easingFunction = Ease || FlxTween.linear;
+			easingFunction = (Ease != null) ? Ease : FlxTween.linear;
 		
 			//TODO: Verify perameters (such as negative duration, invalid start or end values, etc)
 			startValue = StartValue;
@@ -35,7 +35,7 @@ package org.flixel
 		/**
 		 * The easing function used by the Tween.
 		 */
-		protected var easingFunction:Number;
+		protected var easingFunction:Function;
 		/**
 		 * Internal tracker for the start value of the tween.
 		 */
@@ -63,7 +63,7 @@ package org.flixel
 		}
 		public function set progress(value:Number):void
 		{
-			if (value => duration)
+			if (value >= duration)
 			{
 				value = duration;
 			}
@@ -86,7 +86,7 @@ package org.flixel
 		/**
 		 * TODO: ASDoc
 		 */
-		public function get value():void
+		public function get value():Number
 		{
 			return easingFunction(_progress, startValue, totalChange, duration);
 		}

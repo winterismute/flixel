@@ -103,7 +103,7 @@ package org.flixel
 		/**
 		 * Internal flag for what to do when the sound is done fading out.
 		 */
-		protected var _onFadeComplete:Boolean;
+		protected var _onFadeComplete:Function;
 		
 		/**
 		 * The FlxSound constructor gets all the variables initialized, but NOT ready to play a sound yet.
