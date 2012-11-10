@@ -440,9 +440,12 @@ package org.flixel
 		 */
 		protected function startSound(Position:Number):void
 		{
+			// See https://github.com/FlixelCommunity/flixel/issues/120
+			var numLoops:int = (_looped && (Position == 0)) ? 9999 : 0;
+			
 			_position = Position;
 			_paused = false;
-			_channel = _sound.play(_position, (_looped ? 9999 : 0), _transform);
+			_channel = _sound.play(_position, numLoops, _transform);
 			if(_channel != null)
 			{
 				_channel.addEventListener(Event.SOUND_COMPLETE, stopped);
