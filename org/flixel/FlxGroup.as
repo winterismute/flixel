@@ -577,9 +577,9 @@ package org.flixel
 			if (_sortCheckIndexExistence == true)
 			{
 				// If the sorting property is missing, place the object at the end of the list.
-				if(!(_sortIndex in Obj1))
+				if(!Obj1 || !(_sortIndex in Obj1))
 					return 1;
-				else if(!(_sortIndex in Obj2))
+				else if(!Obj2 || !(_sortIndex in Obj2))
 					return -1;
 			}
 			if(Obj1[_sortIndex] < Obj2[_sortIndex])
