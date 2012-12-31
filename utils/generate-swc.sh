@@ -5,10 +5,23 @@ source utils/config
 FLEX_SDK_LOCATION=`utils/flex-sdk`
 
 if [ $? -eq 0 ];then
-
-	# TODO: Error handling if repository is not tagged, or not inside of a repo
-	FLIXEL_VERSION=`git describe`
-	OUTPUT="$SWC_OUTPUT_LOCATION/flixel-$FLIXEL_VERSION.swc"
+	
+	if [ "$PROJECT_VERSION" = auto ]; then
+		PROJECT_VERSION=`git describe`
+		if [ $? -ne 0 ]; then
+			echo "WARNING: Cannot automatically generate a version number for $PROJECT_NAME."
+			echo "    Tag the repository, or manually edit the 'PROJECT_VERSION' variable inside the 'config' file."
+			PROJECT_VERSION=''
+		fi
+	fi
+	
+	if [ "$PROJECT_VERSION" ]; then
+		SWC_NAME="$PROJECT_NAME-$PROJECT_VERSION.swc"
+	else
+		SWC_NAME="$PROJECT_NAME.swc"
+	fi
+	
+	OUTPUT="$SWC_OUTPUT_LOCATION/$SWC_NAME"
 	
 	# Only include the library folder if it exists
 	[ -d "$LIBRARY_LOCATION" ] && LIB_PATH_ARGS="-library-path+=\"$LIBRARY_LOCATION\""
