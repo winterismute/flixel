@@ -9,8 +9,11 @@ if [ $? -eq 0 ];then
 	# TODO: Error handling if repository is not tagged, or not inside of a repo
 	FLIXEL_VERSION=`git describe`
 	OUTPUT="$SWC_OUTPUT_LOCATION/flixel-$FLIXEL_VERSION.swc"
-
-	"$FLEX_SDK_LOCATION"/bin/compc -source-path="$SOURCE_CODE_LOCATION" -include-sources="$SOURCE_CODE_LOCATION" -library-path+="$LIBRARY_LOCATION" -output="$OUTPUT"
+	
+	# Only include the library folder if it exists
+	[ -d "$LIBRARY_LOCATION" ] && LIB_PATH_ARGS="-library-path+=\"$LIBRARY_LOCATION\""
+	
+	"$FLEX_SDK_LOCATION"/bin/compc -source-path="$SOURCE_CODE_LOCATION" -include-sources="$SOURCE_CODE_LOCATION" $LIB_PATH_ARGS -output="$OUTPUT"
 
 else
 
