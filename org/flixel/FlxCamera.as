@@ -302,7 +302,7 @@ package org.flixel
 					var targetX:Number = target.x + ((target.x > 0)?0.0000001:-0.0000001);
 					var targetY:Number = target.y + ((target.y > 0)?0.0000001:-0.0000001);
 					
-					if (FlxSprite(target).simpleRender)
+					if ((target is FlxSprite) && (FlxSprite(target).isSimpleRender))
 					{
 						targetX = FlxU.ceil(targetX);
 						targetY = FlxU.ceil(targetY);

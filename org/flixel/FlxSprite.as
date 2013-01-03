@@ -158,7 +158,7 @@ package org.flixel
 		/**
 		 * If the Sprite is beeing rendered in simple mode.
 		 */
-		public function get simpleRender():Boolean { 
+		public function get isSimpleRender():Boolean { 
 			return ((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null)
 		}
 		
@@ -453,7 +453,7 @@ package org.flixel
 				_point.y = y - int(camera.scroll.y*scrollFactor.y) - FlxU.floor(offset.y);
 				_point.x += (_point.x > 0)?0.0000001:-0.0000001;
 				_point.y += (_point.y > 0)?0.0000001:-0.0000001;
-				if(simpleRender)
+				if(isSimpleRender)
 				{	//Simple render
 					_flashPoint.x = _point.x;
 					_flashPoint.y = _point.y;
