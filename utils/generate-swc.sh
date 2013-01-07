@@ -21,12 +21,14 @@ if [ $? -eq 0 ];then
 		SWC_NAME="$PROJECT_NAME.swc"
 	fi
 	
-	OUTPUT="$SWC_OUTPUT_LOCATION/$SWC_NAME"
+	compc_args=(-source-path="$SOURCE_CODE_LOCATION")
+	compc_args+=(-include-sources="$SOURCE_CODE_LOCATION")
+	compc_args+=(-output="$SWC_OUTPUT_LOCATION/$SWC_NAME")
 	
 	# Only include the library folder if it exists
-	[ -d "$LIBRARY_LOCATION" ] && LIB_PATH_ARGS="-library-path+=\"$LIBRARY_LOCATION\""
+	[ -d "$LIBRARY_LOCATION" ] && compc_args+=(-library-path+="$LIBRARY_LOCATION")
 	
-	"$FLEX_SDK_LOCATION"/bin/compc -source-path="$SOURCE_CODE_LOCATION" -include-sources="$SOURCE_CODE_LOCATION" $LIB_PATH_ARGS -output="$OUTPUT"
+	"$FLEX_SDK_LOCATION"/bin/compc "${compc_args[@]}";
 
 else
 
