@@ -111,21 +111,19 @@ package org.flixel
 		public function FlxSound()
 		{
 			super();
-			createSound();
+			reset();
 		}
 		
 		/**
 		 * An internal function for clearing all the variables used by sounds.
 		 */
-		protected function createSound():void
+		protected function reset():void
 		{
 			destroy();
+			
 			x = 0;
 			y = 0;
-			if(_transform == null)
-				_transform = new SoundTransform();
-			_transform.pan = 0;
-			_sound = null;
+			
 			_position = 0;
 			_paused = false;
 			_volume = 1.0;
@@ -136,15 +134,15 @@ package org.flixel
 			_pan = false;
 			_fade = null;
 			_onFadeComplete = null;
-			exists = false;
-			active = false;
 			visible = false;
-			name = null;
-			artist = null;
 			amplitude = 0;
 			amplitudeLeft = 0;
 			amplitudeRight = 0;
 			autoDestroy = false;
+			
+			if(_transform == null)
+				_transform = new SoundTransform();
+			_transform.pan = 0;
 		}
 		
 		/**
@@ -152,16 +150,25 @@ package org.flixel
 		 */
 		override public function destroy():void
 		{
-			kill();
-
 			_transform = null;
-			_sound = null;
 			exists = false;
 			active = false;
-			_channel = null;
 			_target = null;
 			name = null;
 			artist = null;
+			
+			if (_channel)
+			{
+				_channel.removeEventListener(Event.SOUND_COMPLETE,stopped);
+				_channel.stop();
+				_channel = null;
+			}
+			
+			if (_sound)
+			{
+				_sound.removeEventListener(Event.ID3, gotID3);
+				_sound = null;
+			}
 			
 			super.destroy();
 		}
@@ -245,7 +252,7 @@ package org.flixel
 		public function loadEmbedded(EmbeddedSound:Class, Looped:Boolean=false, AutoDestroy:Boolean=false):FlxSound
 		{
 			cleanup(true);
-			createSound();
+			
 			_sound = new EmbeddedSound();
 			//NOTE: can't pull ID3 info from embedded sound currently
 			_looped = Looped;
@@ -267,7 +274,7 @@ package org.flixel
 		public function loadStream(SoundURL:String, Looped:Boolean=false, AutoDestroy:Boolean=false):FlxSound
 		{
 			cleanup(true);
-			createSound();
+			
 			_sound = new Sound();
 			_sound.addEventListener(Event.ID3, gotID3);
 			_sound.load(new URLRequest(SoundURL));
@@ -389,6 +396,9 @@ package org.flixel
 			play();
 		}
 		
+		/**
+		 * Whether or not the sound is currently playing.
+		 */
 		public function get playing():Boolean
 		{
 			return (_channel != null);
@@ -436,7 +446,7 @@ package org.flixel
 		}
 		
 		/**
-		 * An internal helper function used to attempt to start playing the sound and populate the `_channel` variable.
+		 * An internal helper function used to attempt to start playing the sound and populate the <code>_channel</code> variable.
 		 */
 		protected function startSound(Position:Number):void
 		{
@@ -477,12 +487,20 @@ package org.flixel
 		}
 		
 		/**
-		 * An internal helper function used to help Flash clean up (and potentially re-use) finished sounds.
+		 * An internal helper function used to help Flash clean up (and potentially re-use) finished sounds. Will stop the current sound and destroy the associated <code>SoundChannel</code>, plus, any other commands ordered by the passed in parameters.
 		 * 
-		 * @param	destroySound		Whether or not to destroy the sound 
+		 * @param	destroySound		Whether or not to destroy the sound. If this is true, the position and fading will be reset as well.
+		 * @param	resetPosition		Whether or not to reset the position of the sound.
+		 * @param	resetFading		Whether or not to reset the current fading variables of the sound.
 		 */
 		protected function cleanup(destroySound:Boolean, resetPosition:Boolean = true, resetFading:Boolean = true):void
 		{
+			if (destroySound)
+			{
+				reset();
+				return;
+			}
+		
 			if (_channel)
 			{
 				_channel.removeEventListener(Event.SOUND_COMPLETE,stopped);
@@ -503,9 +521,6 @@ package org.flixel
 				_fade = null;
 				_onFadeComplete = null;
 			}
-			
-			if (destroySound)
-				destroy();
 		}
 		
 		/**
