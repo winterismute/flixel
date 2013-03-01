@@ -46,7 +46,7 @@ package org.flixel.system.debug
 		 */
 		public function destroy():void
 		{
-			removeChild(_bounds);
+			if (_bounds) removeChild(_bounds);
 			_bounds = null;
 			
 			parent.removeEventListener(MouseEvent.MOUSE_MOVE,handleMouseMove);
