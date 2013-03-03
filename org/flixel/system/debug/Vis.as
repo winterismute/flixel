@@ -49,9 +49,12 @@ package org.flixel.system.debug
 			if (_bounds) removeChild(_bounds);
 			_bounds = null;
 			
-			parent.removeEventListener(MouseEvent.MOUSE_MOVE,handleMouseMove);
-			parent.removeEventListener(MouseEvent.MOUSE_DOWN,handleMouseDown);
-			parent.removeEventListener(MouseEvent.MOUSE_UP,handleMouseUp);
+			if (parent)
+			{
+				parent.removeEventListener(MouseEvent.MOUSE_MOVE,handleMouseMove);
+				parent.removeEventListener(MouseEvent.MOUSE_DOWN,handleMouseDown);
+				parent.removeEventListener(MouseEvent.MOUSE_UP,handleMouseUp);
+			}
 		}
 		
 		//***ACTUAL BUTTON BEHAVIORS***//

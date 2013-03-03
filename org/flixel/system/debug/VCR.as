@@ -169,9 +169,12 @@ package org.flixel.system.debug
 			if (_step) removeChild(_step);
 			_step = null;
 			
-			parent.removeEventListener(MouseEvent.MOUSE_MOVE,handleMouseMove);
-			parent.removeEventListener(MouseEvent.MOUSE_DOWN,handleMouseDown);
-			parent.removeEventListener(MouseEvent.MOUSE_UP,handleMouseUp);
+			if (parent)
+			{
+				parent.removeEventListener(MouseEvent.MOUSE_MOVE,handleMouseMove);
+				parent.removeEventListener(MouseEvent.MOUSE_DOWN,handleMouseDown);
+				parent.removeEventListener(MouseEvent.MOUSE_UP,handleMouseUp);
+			}
 		}
 		
 		/**
