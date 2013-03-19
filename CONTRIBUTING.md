@@ -7,8 +7,8 @@ Any new features or changes that break existing code are saved for the next vers
 
 #### Branches
 
- `FlixelCommunity/master` - The current, stable release; currently at Flixel v2.55 (Adam Atomic's version).
- `FlixelCommunity/dev` - The developmental version containing all the fixes for the next release. Only "finished" bug fixes should be merged into this branch; no "half-finished" code or code that doesn't compile.
+ `FlixelCommunity/master` The current, stable release; currently at Flixel v2.55 (Adam Atomic's version).  
+ `FlixelCommunity/dev` The developmental version containing all the fixes for the next release. Only "finished" bug fixes should be merged into this branch; no "half-finished" code or code that doesn't compile.
 
 #### Finding an issue to work on
 
