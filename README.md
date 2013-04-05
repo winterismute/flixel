@@ -6,7 +6,7 @@
 
 **Basic**
 
-* Display thousands ofori moving objects
+* Display thousands of moving objects
 * Basic collisions between objects
 * Group objects together for simplicity
 * Easily generate and emit particles
