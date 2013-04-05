@@ -302,7 +302,7 @@ package org.flixel
 					var targetX:Number = target.x + ((target.x > 0)?0.0000001:-0.0000001);
 					var targetY:Number = target.y + ((target.y > 0)?0.0000001:-0.0000001);
 					
-					if ((target is FlxSprite) && (FlxSprite(target).isSimpleRender))
+					if ((target is FlxSprite) && (FlxSprite(target).isSimpleRender()))
 					{
 						targetX = FlxU.ceil(targetX);
 						targetY = FlxU.ceil(targetY);
@@ -406,7 +406,8 @@ package org.flixel
 					deadzone = new FlxRect((width-helper)/2,(height-helper)/2,helper,helper);
 					break;
 				case STYLE_LOCKON:
-					if (target != null) {	
+					if (target != null) 
+					{	
 						w = target.width;
 						h = target.height;
 					}

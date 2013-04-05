@@ -158,7 +158,8 @@ package org.flixel
 		/**
 		 * If the Sprite is beeing rendered in simple mode.
 		 */
-		public function get isSimpleRender():Boolean { 
+		public function isSimpleRender():Boolean 
+		{
 			return ((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null)
 		}
 		
@@ -453,14 +454,15 @@ package org.flixel
 				_point.y = y - int(camera.scroll.y*scrollFactor.y) - FlxU.floor(offset.y);
 				_point.x += (_point.x > 0)?0.0000001:-0.0000001;
 				_point.y += (_point.y > 0)?0.0000001:-0.0000001;
-				if(isSimpleRender)
-				{	//Simple render
+				
+				if(isSimpleRender())
+				{
 					_flashPoint.x = _point.x;
 					_flashPoint.y = _point.y;
 					camera.buffer.copyPixels(framePixels,_flashRect,_flashPoint,null,null,true);
 				}
-				else
-				{	//Advanced render
+				else //Advanced render
+				{
 					_matrix.identity();
 					_matrix.translate(-origin.x,-origin.y);
 					_matrix.scale(scale.x,scale.y);
@@ -469,6 +471,7 @@ package org.flixel
 					_matrix.translate(_point.x+origin.x,_point.y+origin.y);
 					camera.buffer.draw(framePixels,_matrix,null,blend,null,antialiasing);
 				}
+				
 				_VISIBLECOUNT++;
 				if(FlxG.visualDebug && !ignoreDrawDebug)
 					drawDebug(camera);
