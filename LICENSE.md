@@ -1,6 +1,6 @@
 
-**Copyright (c) 2009 Adam 'Atomic' Saltsman**  
-**Copyright (c) 2013 FlixelCommunity Team**
+**Copyright (c) 2009 Adam 'Atomic' Saltsman and other contributors.**  
+Full list at http://github.com/FlixelCommunity/flixel/contributors
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
