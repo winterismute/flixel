@@ -100,6 +100,10 @@ package org.flixel
 		 */
 		protected var _curIndex:uint;
 		/**
+		 * Internal, tracker for the number of frames on the tile sheet, used with Flash getter/setter.
+		 */
+		protected var _numFrames:uint;
+		/**
 		 * Internal, used to time each frame of animation.
 		 */
 		protected var _frameTimer:Number;
@@ -188,6 +192,7 @@ package org.flixel
 			_curAnim = null;
 			_curFrame = 0;
 			_curIndex = 0;
+			_numFrames = 0;
 			_frameTimer = 0;
 
 			_matrix = new Matrix();
@@ -405,6 +410,7 @@ package org.flixel
 			frames = (_flashRect2.width / _flashRect.width) * (_flashRect2.height / _flashRect.height);
 			if(_colorTransform != null) framePixels.colorTransform(_flashRect,_colorTransform);
 			_curIndex = 0;
+			_numFrames = 0;
 		}
 		
 		/**
@@ -577,8 +583,8 @@ package org.flixel
 					}
 					else
 						_curFrame++;
-					_curIndex = _curAnim.frames[_curFrame];
-					dirty = true;
+					if (!trySetIndex(_curAnim.frames[_curFrame]))
+						FlxG.log("WARNING: A FlxSprite animation is trying to set the frame number of its FlxSprite out of bounds.");
 				}
 			}
 			
@@ -645,8 +651,9 @@ package org.flixel
 						finished = true;
 					else
 						finished = false;
-					_curIndex = _curAnim.frames[_curFrame];
-					dirty = true;
+					if (!trySetIndex(_curAnim.frames[_curFrame]))
+						FlxG.log("WARNING: A FlxSprite animation is trying to set the frame number of its FlxSprite out of bounds.");
+						
 					return;
 				}
 				i++;
@@ -661,8 +668,7 @@ package org.flixel
 		public function randomFrame():void
 		{
 			_curAnim = null;
-			_curIndex = int(FlxG.random()*(_pixels.width/frameWidth));
-			dirty = true;
+			trySetIndex(int(FlxG.random()*numFrames)); // Shouldn't ever throw an error
 		}
 		
 		/**
@@ -827,9 +833,83 @@ package org.flixel
 		 */
 		public function set frame(Frame:uint):void
 		{
+			if (Frame >= numFrames)
+			{
+				FlxG.log("WARNING: The frame number of a FlxSprite must be less than its `numFrames` value.");
+				Frame = numFrames - 1;
+			}
+			
 			_curAnim = null;
 			_curIndex = Frame;
 			dirty = true;
+		}
+		
+		/**
+		 * Try setting the `_curIndex` value to the specified value, extracted out to avoid duplicate code.
+		 * If it is outside of the allowed bounds, it will still set the variable to the nearest
+		 * possible value, but will return false, allowing internal code to throw its own error messages (if necessary).
+		 * Will re-draw even if the frame hasn't changed (Adam had it that way, I'll just assume he did that on purpose).
+		 */
+		private function trySetIndex(Value:uint):Boolean
+		{	
+			_curIndex = Value;
+			dirty = true;
+		
+			if (_curIndex >= numFrames)
+			{
+				_curIndex = numFrames;
+				return false;
+			}
+			
+			//else
+			return true;
+		}
+		
+		/**
+		 * The maximum number of frames that can fit on the sprite sheet, calculated based on the size of the each frame and the 
+		 */
+		public function get maxFrames():uint
+		{
+			var widthHelper:uint = _flipped?_flipped:_pixels.width;
+			var maxFramesX:uint = FlxU.ceil(widthHelper / frameWidth);
+			var maxFramesY:uint = FlxU.ceil(_pixels.height / frameHeight);
+			return maxFramesX * maxFramesY;
+		}
+		
+		/**
+		 * The number of frames are on the sprite sheet. Defaults to <code>maxFrames</code> if no value is set.
+		 * 
+		 * @param	NumFrames	The number of frames on the sprite sheet. Has to be a value between <code>1</code> and <code>maxFrames</code>.
+		 */
+		public function get numFrames():uint
+		{
+			return (_numFrames == -1) ? maxFrames : _numFrames;
+		}
+		
+		/**
+		 * @private
+		 */
+		public function set numFrames(NumFrames:uint):void
+		{
+			if (NumFrames < 1)
+			{
+				FlxG.log("ERROR: Cannot set the number of frames on a FlxSprite to less than 1.");
+				_numFrames = 1;
+				return;
+			}
+			
+			if (NumFrames > maxFrames)
+			{
+				FlxG.log("ERROR: Cannot set the number of frames on a FlxSprite to higher than its `maxFrames` value (" + maxFrames + ").");
+				_numFrames = maxFrames;
+				return;
+			}
+			
+			// Will only re-render if the current frame number has changed
+			if (frame >= _numFrames)
+			{
+				frame = _numFrames - 1;
+			}
 		}
 		
 		/**
