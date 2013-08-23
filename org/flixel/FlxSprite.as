@@ -96,6 +96,11 @@ package org.flixel
 		 */
 		protected var _curIndex:uint;
 		/**
+		 * Internal, tracker for the maximum number of frames that can fit on the tile sheet, used with read-only getter.
+		 * WARNING: assumes each row in the sprite sheet is full!
+		 */
+		protected var _maxFrames:uint;
+		/**
 		 * Internal, tracker for the number of frames on the tile sheet, used with Flash getter/setter.
 		 */
 		protected var _numFrames:uint;
@@ -189,6 +194,7 @@ package org.flixel
 			_curFrame = 0;
 			_curIndex = 0;
 			_numFrames = 0;
+			_maxFrames = 0;
 			_frameTimer = 0;
 
 			_matrix = new Matrix();
@@ -406,6 +412,11 @@ package org.flixel
 			if(_colorTransform != null) framePixels.colorTransform(_flashRect,_colorTransform);
 			_curIndex = 0;
 			_numFrames = 0;
+			
+			var widthHelper:uint = _flipped?_flipped:_pixels.width;
+			var maxFramesX:uint = FlxU.ceil(widthHelper / frameWidth);
+			var maxFramesY:uint = FlxU.ceil(_pixels.height / frameHeight);
+			_maxFrames = maxFramesX * maxFramesY;
 		}
 		
 		/**
@@ -865,10 +876,7 @@ package org.flixel
 		 */
 		public function get maxFrames():uint
 		{
-			var widthHelper:uint = _flipped?_flipped:_pixels.width;
-			var maxFramesX:uint = FlxU.ceil(widthHelper / frameWidth);
-			var maxFramesY:uint = FlxU.ceil(_pixels.height / frameHeight);
-			return maxFramesX * maxFramesY;
+			return _maxFrames;
 		}
 		
 		/**
