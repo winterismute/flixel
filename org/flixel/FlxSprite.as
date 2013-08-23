@@ -886,7 +886,7 @@ package org.flixel
 		 */
 		public function get numFrames():uint
 		{
-			return (_numFrames == -1) ? maxFrames : _numFrames;
+			return (_numFrames == 0) ? maxFrames : _numFrames;
 		}
 		
 		/**
