@@ -65,10 +65,6 @@ package org.flixel
 		 */
 		public var frameHeight:uint;
 		/**
-		 * The total number of frames in this image.  WARNING: assumes each row in the sprite sheet is full!
-		 */
-		public var frames:uint;
-		/**
 		 * The actual Flash <code>BitmapData</code> object representing the current display state of the sprite.
 		 */
 		public var framePixels:BitmapData;
@@ -407,7 +403,6 @@ package org.flixel
 				framePixels = new BitmapData(width,height);
 			origin.make(frameWidth*0.5,frameHeight*0.5);
 			framePixels.copyPixels(_pixels,_flashRect,_flashPointZero);
-			frames = (_flashRect2.width / _flashRect.width) * (_flashRect2.height / _flashRect.height);
 			if(_colorTransform != null) framePixels.colorTransform(_flashRect,_colorTransform);
 			_curIndex = 0;
 			_numFrames = 0;
