@@ -697,7 +697,6 @@ package org.flixel
 					if (basic != null && basic.exists && overlaps(basic,InScreenSpace,Camera))
 					{
 						results = true;
-						break;
 					}
 				}
 				return results;
@@ -753,7 +752,6 @@ package org.flixel
 					if(basic != null && basic.exists && overlapsAt(X,Y,basic,InScreenSpace,Camera))
 					{
 						results = true;
-						break;
 					}
 				}
 				return results;

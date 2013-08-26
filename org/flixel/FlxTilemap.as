@@ -885,7 +885,6 @@ package org.flixel
 							if(overlapsWithCallback(basic as FlxObject,null,false,_point))
 							{	
 								results = true;
-								break;
 							}
 						}
 						else
@@ -893,7 +892,6 @@ package org.flixel
 							if(overlapsAt(X,Y,basic,InScreenSpace,Camera))
 							{	
 								results = true;
-								break;
 							}
 						}
 					}
