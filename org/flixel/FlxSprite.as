@@ -880,7 +880,17 @@ package org.flixel
 		}
 		
 		/**
-		 * The number of frames are on the sprite sheet. Defaults to <code>maxFrames</code> if no value is set.
+		 * The number of frames that are on the sprite sheet.
+		 * 
+		 * @deprecated This property is deprecated. Use <code>numFrames</code> instead.
+		 */
+		public function get frames():uint
+		{
+			return numFrames;
+		}
+		
+		/**
+		 * The number of frames that are on the sprite sheet. Defaults to <code>maxFrames</code> if no value is set.
 		 * 
 		 * @param	NumFrames	The number of frames on the sprite sheet. Has to be a value between <code>1</code> and <code>maxFrames</code>.
 		 */
