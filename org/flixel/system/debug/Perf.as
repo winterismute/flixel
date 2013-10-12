@@ -122,7 +122,6 @@ package org.flixel.system.debug
 					updateTime += _flixelUpdate[i++];
 				
 				var activeCount:uint = 0;
-				var te:uint = 0;
 				i = 0;
 				while(i < _objectMarker)
 				{

@@ -413,7 +413,6 @@ package org.flixel
 		 */
 		public function getFirstNull():int
 		{
-			var basic:FlxBasic;
 			var i:uint = 0;
 			var l:uint = members.length;
 			while(i < l)

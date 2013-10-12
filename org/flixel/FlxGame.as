@@ -257,7 +257,7 @@ package org.flixel
 				if(useSoundHotKeys)
 				{
 					var c:int = FlashEvent.keyCode;
-					var code:String = String.fromCharCode(FlashEvent.charCode);
+					//var code:String = String.fromCharCode(FlashEvent.charCode);
 					switch(c)
 					{
 						case 48:
@@ -300,7 +300,6 @@ package org.flixel
 				return;
 			if(_replaying && (_replayCancelKeys != null) && (_debugger == null) && (FlashEvent.keyCode != 192) && (FlashEvent.keyCode != 220))
 			{
-				var cancel:Boolean = false;
 				var replayCancelKey:String;
 				var i:uint = 0;
 				var l:uint = _replayCancelKeys.length;
