@@ -159,7 +159,7 @@ package org.flixel.system.input
 					load();
 				else
 				{
-					_cursorContainer.removeChild(_cursor)
+					_cursorContainer.removeChild(_cursor);
 					_cursor = null;
 				}
 			}

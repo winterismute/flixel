@@ -181,7 +181,7 @@ package org.flixel
 			_focus = new Sprite();
 			_focus.visible = false;
 			_soundTray = new Sprite();
-			_mouse = new Sprite()
+			_mouse = new Sprite();
 			
 			//basic display and update setup stuff
 			FlxG.init(this,GameSizeX,GameSizeY,Zoom);

@@ -160,7 +160,7 @@ package org.flixel.system.debug
 				_names.removeChild(watchEntry.nameDisplay);
 				_values.removeChild(watchEntry.valueDisplay);
 				watchEntry.destroy();
-				i++
+				i++;
 			}
 			_watching.length = 0;
 		}

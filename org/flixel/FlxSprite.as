@@ -165,7 +165,7 @@ package org.flixel
 		 */
 		public function isSimpleRender():Boolean 
 		{
-			return ((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null)
+			return ((angle == 0) || (_bakedRotation > 0)) && (scale.x == 1) && (scale.y == 1) && (blend == null);
 		}
 		
 		/**
