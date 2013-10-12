@@ -970,21 +970,21 @@ package org.flixel
 		 * Checks to see if a point in 2D world space overlaps this <code>FlxSprite</code> object's current displayed pixels.
 		 * This check is ALWAYS made in screen space, and always takes scroll factors into account.
 		 * 
-		 * @param	Point		The point in world space you want to check.
+		 * @param	TargetPoint	The point in world space you want to check.
 		 * @param	Mask		Used in the pixel hit test to determine what counts as solid.
 		 * @param	Camera		Specify which game camera you want.  If null getScreenXY() will just grab the first global camera.
 		 * 
 		 * @return	Whether or not the point overlaps this object.
 		 */
-		public function pixelsOverlapPoint(Point:FlxPoint,Mask:uint=0xFF,Camera:FlxCamera=null):Boolean
+		public function pixelsOverlapPoint(TargetPoint:FlxPoint,Mask:uint=0xFF,Camera:FlxCamera=null):Boolean
 		{
 			if(Camera == null)
 				Camera = FlxG.camera;
 			getScreenXY(_point,Camera);
 			_point.x = _point.x - offset.x;
 			_point.y = _point.y - offset.y;
-			_flashPoint.x = (Point.x - Camera.scroll.x) - _point.x;
-			_flashPoint.y = (Point.y - Camera.scroll.y) - _point.y;
+			_flashPoint.x = (TargetPoint.x - Camera.scroll.x) - _point.x;
+			_flashPoint.y = (TargetPoint.y - Camera.scroll.y) - _point.y;
 			return framePixels.hitTest(_flashPointZero,Mask,_flashPoint);
 		}
 		

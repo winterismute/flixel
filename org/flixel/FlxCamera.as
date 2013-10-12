@@ -422,13 +422,13 @@ package org.flixel
 		/**
 		 * Move the camera focus to this location instantly.
 		 * 
-		 * @param	Point		Where you want the camera to focus.
+		 * @param	TargetPoint		Where you want the camera to focus.
 		 */
-		public function focusOn(Point:FlxPoint):void
+		public function focusOn(TargetPoint:FlxPoint):void
 		{
-			Point.x += (Point.x > 0)?0.0000001:-0.0000001;
-			Point.y += (Point.y > 0)?0.0000001:-0.0000001;
-			scroll.make(Point.x - width*0.5,Point.y - height*0.5);
+			TargetPoint.x += (TargetPoint.x > 0)?0.0000001:-0.0000001;
+			TargetPoint.y += (TargetPoint.y > 0)?0.0000001:-0.0000001;
+			scroll.make(TargetPoint.x - width*0.5,TargetPoint.y - height*0.5);
 		}
 		
 		/**
