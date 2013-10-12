@@ -6,12 +6,10 @@ package org.flixel
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.geom.Matrix;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import org.flixel.plugin.DebugPathDisplay;
 	import org.flixel.plugin.TimerManager;
-	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxQuadTree;
 	import org.flixel.system.input.*;
 	
@@ -880,7 +878,7 @@ package org.flixel
 			FlxG.cameras.length = 0;
 			
 			if(NewCamera == null)
-				NewCamera = new FlxCamera(0,0,FlxG.width,FlxG.height)
+				NewCamera = new FlxCamera(0,0,FlxG.width,FlxG.height);
 			FlxG.camera = FlxG.addCamera(NewCamera);
 		}
 		

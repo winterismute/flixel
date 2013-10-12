@@ -1,8 +1,5 @@
 package org.flixel
 {
-	import flash.display.BitmapData;
-	import flash.geom.Rectangle;
-	
 	/**
 	 * This is a basic "environment object" class, used to create simple walls and floors.
 	 * It can be filled with a random selection of tiles to quickly add detail.

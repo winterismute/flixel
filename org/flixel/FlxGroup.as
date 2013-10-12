@@ -170,21 +170,21 @@ package org.flixel
 		 * <p>WARNING: If the group has a maxSize that has already been met,
 		 * the object will NOT be added to the group!</p>
 		 *
-		 * @param	Object		The object you want to add to the group.
+		 * @param	TargetObject		The object you want to add to the group.
 		 *
 		 * @return	The same <code>FlxBasic</code> object that was passed in.
 		 */
-		public function add(Object:FlxBasic):FlxBasic
+		public function add(TargetObject:FlxBasic):FlxBasic
 		{
-			if (Object == null)
+			if (TargetObject == null)
 			{
 				FlxG.log("WARNING: Cannot add a `null` object to a FlxGroup.");
 				return null;
 			}
 		
 			//Don't bother adding an object twice.
-			if(members.indexOf(Object) >= 0)
-				return Object;
+			if(members.indexOf(TargetObject) >= 0)
+				return TargetObject;
 			
 			//First, look for a null entry where we can add the object.
 			var i:uint = 0;
@@ -193,10 +193,10 @@ package org.flixel
 			{
 				if(members[i] == null)
 				{
-					members[i] = Object;
+					members[i] = TargetObject;
 					if(i >= length)
 						length = i+1;
-					return Object;
+					return TargetObject;
 				}
 				i++;
 			}
@@ -205,7 +205,7 @@ package org.flixel
 			if(_maxSize > 0)
 			{
 				if(members.length >= _maxSize)
-					return Object;
+					return TargetObject;
 				else if(members.length * 2 <= _maxSize)
 					members.length *= 2;
 				else
@@ -216,9 +216,9 @@ package org.flixel
 			
 			//If we made it this far, then we successfully grew the group,
 			//and we can go ahead and add the object at the first open slot.
-			members[i] = Object;
+			members[i] = TargetObject;
 			length = i+1;
-			return Object;
+			return TargetObject;
 		}
 		
 		/**
@@ -277,14 +277,14 @@ package org.flixel
 		/**
 		 * Removes an object from the group.
 		 * 
-		 * @param	Object	The <code>FlxBasic</code> you want to remove.
+		 * @param	TargetObject	The <code>FlxBasic</code> you want to remove.
 		 * @param	Splice	Whether the object should be cut from the array entirely or not.
 		 * 
 		 * @return	The removed object.
 		 */
-		public function remove(Object:FlxBasic,Splice:Boolean=false):FlxBasic
+		public function remove(TargetObject:FlxBasic,Splice:Boolean=false):FlxBasic
 		{
-			var index:int = members.indexOf(Object);
+			var index:int = members.indexOf(TargetObject);
 			if((index < 0) || (index >= members.length))
 				return null;
 			if(Splice)
@@ -294,7 +294,7 @@ package org.flixel
 			}
 			else
 				members[index] = null;
-			return Object;
+			return TargetObject;
 		}
 		
 		/**
@@ -413,7 +413,6 @@ package org.flixel
 		 */
 		public function getFirstNull():int
 		{
-			var basic:FlxBasic;
 			var i:uint = 0;
 			var l:uint = members.length;
 			while(i < l)
