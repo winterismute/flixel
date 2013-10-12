@@ -994,9 +994,9 @@ package org.flixel
 						if(Callback != null)
 						{
 							if(FlipCallbackParams)
-								overlapFound = Callback(TargetObject,tile);
+								overlapFound = Boolean(Callback(TargetObject,tile));
 							else
-								overlapFound = Callback(tile,TargetObject);
+								overlapFound = Boolean(Callback(tile,TargetObject));
 						}
 					}	
 					if(overlapFound)
