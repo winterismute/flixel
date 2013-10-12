@@ -184,7 +184,7 @@ package org.flixel
 				l = _tileObjects.length;
 				while(i < l)
 					(_tileObjects[i++] as FlxTile).destroy();
-				_tileObjects = null;
+				_tileObjects = [];
 			}
 			if(_buffers != null)
 			{
@@ -192,7 +192,7 @@ package org.flixel
 				l = _buffers.length;
 				while(i < l)
 					(_buffers[i++] as FlxTilemapBuffer).destroy();
-				_buffers = null;
+				_buffers = [];
 			}
 		}
 		
