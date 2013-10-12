@@ -298,8 +298,7 @@ package org.flixel
 		 */
 		protected function makeDebugTile(Color:uint):BitmapData
 		{
-			var debugTile:BitmapData
-			debugTile = new BitmapData(_tileWidth,_tileHeight,true,0);
+			var debugTile:BitmapData = new BitmapData(_tileWidth,_tileHeight,true,0);
 
 			var gfx:Graphics = FlxG.flashGfx;
 			gfx.clear();
