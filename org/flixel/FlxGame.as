@@ -7,13 +7,11 @@ package org.flixel
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.*;
-	import flash.geom.Point;
 	import flash.text.AntiAliasType;
 	import flash.text.GridFitType;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	import flash.ui.Mouse;
-	import flash.utils.Timer;
 	import flash.utils.getTimer;
 	
 	import org.flixel.plugin.TimerManager;

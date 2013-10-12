@@ -7,8 +7,6 @@ package org.flixel.system.input
 	import org.flixel.FlxCamera;
 	import org.flixel.FlxG;
 	import org.flixel.FlxPoint;
-	import org.flixel.FlxSprite;
-	import org.flixel.FlxU;
 	import org.flixel.system.replay.MouseRecord;
 	
 	/**

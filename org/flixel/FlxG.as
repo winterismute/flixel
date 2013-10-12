@@ -6,12 +6,10 @@ package org.flixel
 	import flash.display.Sprite;
 	import flash.display.Stage;
 	import flash.geom.Matrix;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import org.flixel.plugin.DebugPathDisplay;
 	import org.flixel.plugin.TimerManager;
-	import org.flixel.system.FlxDebugger;
 	import org.flixel.system.FlxQuadTree;
 	import org.flixel.system.input.*;
 	

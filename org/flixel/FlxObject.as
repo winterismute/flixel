@@ -1,9 +1,6 @@
 package org.flixel
 {
 	import flash.display.Graphics;
-	import flash.display.Sprite;
-	import flash.geom.Point;
-	
 	import org.flixel.FlxBasic;
 	
 	/**
