@@ -421,8 +421,8 @@ package org.flixel
 			_numFrames = 0;
 			
 			var widthHelper:uint = _flipped?_flipped:_pixels.width;
-			var maxFramesX:uint = FlxU.ceil(widthHelper / frameWidth);
-			var maxFramesY:uint = FlxU.ceil(_pixels.height / frameHeight);
+			var maxFramesX:uint = widthHelper / frameWidth;
+			var maxFramesY:uint = _pixels.height / frameHeight;
 			_maxFrames = maxFramesX * maxFramesY;
 		}
 		
