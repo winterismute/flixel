@@ -192,8 +192,8 @@ package org.flixel
 		protected var _rect:FlxRect;
 		/**
 		 * Set this to false if you want to skip the automatic motion/movement stuff (see <code>updateMotion()</code>).
-		 * FlxObject and FlxSprite default to true.
-		 * FlxText, FlxTileblock, and FlxTilemap default to false.
+		 * FlxObject, FlxSprite and FlxText default to true.
+		 * FlxTileblock and FlxTilemap default to false.
 		 */
 		public var moves:Boolean;
 		/**
