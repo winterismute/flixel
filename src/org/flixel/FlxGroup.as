@@ -147,18 +147,14 @@ package org.flixel
 				_marker = 0;
 			if((_maxSize == 0) || (members == null) || (_maxSize >= members.length))
 				return;
-			
+	
 			//If the max size has shrunk, we need to get rid of some objects
-			var basic:FlxBasic;
-			var i:uint = _maxSize;
-			var l:uint = members.length;
-			while(i < l)
+			while(members.length > _maxSize)
 			{
-				basic = members[i++] as FlxBasic;
-				if(basic != null)
-					basic.destroy();
+				var basic:FlxBasic = members.pop() as FlxBasic;
+				if(basic != null) basic.destroy();
 			}
-			length = members.length = _maxSize;
+			length = members.length;
 		}
 		
 		/**
