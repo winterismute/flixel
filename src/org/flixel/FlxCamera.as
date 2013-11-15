@@ -304,8 +304,8 @@ package org.flixel
 					
 					if ((target is FlxSprite) && (FlxSprite(target).isSimpleRender()))
 					{
-						targetX = FlxU.ceil(targetX);
-						targetY = FlxU.ceil(targetY);
+						targetX = FlxU.floor(targetX);
+						targetY = FlxU.floor(targetY);
 					}
 					
 					edge = targetX - deadzone.x;
