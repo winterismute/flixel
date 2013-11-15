@@ -461,8 +461,8 @@ package org.flixel
 				camera = cameras[i++];
 				if(!onScreen(camera))
 					continue;
-				_point.x = x - int(camera.scroll.x*scrollFactor.x) - FlxU.floor(offset.x);
-				_point.y = y - int(camera.scroll.y*scrollFactor.y) - FlxU.floor(offset.y);
+				_point.x = x - int(camera.scroll.x*scrollFactor.x) - offset.x;
+				_point.y = y - int(camera.scroll.y*scrollFactor.y) - offset.y;
 				_point.x += (_point.x > 0)?0.0000001:-0.0000001;
 				_point.y += (_point.y > 0)?0.0000001:-0.0000001;
 				
