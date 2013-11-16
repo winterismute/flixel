@@ -402,7 +402,7 @@ package org.flixel
 					break;
 				case STYLE_TOPDOWN:
 				case STYLE_TOPDOWN_TIGHT:
-					var tdTightness:Number = (Style == TOPDOWN_TIGHT) ? 8 : 4;
+					var tdTightness:Number = (Style == STYLE_TOPDOWN_TIGHT) ? 8 : 4;
 					var tdHelper:Number = FlxU.max(width,height)/tdTightness;
 					deadzone = new FlxRect((width-tdHelper)/2,(height-tdHelper)/2,tdHelper,tdHelper);
 					break;
@@ -412,6 +412,8 @@ package org.flixel
 					deadzone = new FlxRect((width-targetWidth)/2,(height-targetHeight)/2,targetWidth,targetHeight);
 					break;
 				default:
+					FlxG.log("[FlxCamera#follow()] WARNING: Invalid follow style of value: " + String(Style) + "'. Defaulting to centering on the target.");
+					target = null;
 					deadzone = null;
 					break;
 			}
