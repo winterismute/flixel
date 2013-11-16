@@ -386,7 +386,6 @@ package org.flixel
 		public function follow(Target:FlxObject, Style:uint=STYLE_LOCKON):void
 		{
 			target = Target;
-			var helper:Number;
 			var w:Number = 0;
 			var h:Number = 0;
 			
@@ -398,12 +397,10 @@ package org.flixel
 					deadzone = new FlxRect((width-w)/2,(height-h)/2 - h*0.25,w,h);
 					break;
 				case STYLE_TOPDOWN:
-					helper = FlxU.max(width,height)/4;
-					deadzone = new FlxRect((width-helper)/2,(height-helper)/2,helper,helper);
-					break;
 				case STYLE_TOPDOWN_TIGHT:
-					helper = FlxU.max(width,height)/8;
-					deadzone = new FlxRect((width-helper)/2,(height-helper)/2,helper,helper);
+					var tdTightness:Number = (Style == TOPDOWN_TIGHT) ? 8 : 4;
+					var tdHelper:Number = FlxU.max(width,height)/tdTightness;
+					deadzone = new FlxRect((width-tdHelper)/2,(height-tdHelper)/2,tdHelper,tdHelper);
 					break;
 				case STYLE_LOCKON:
 					if (target != null) 
