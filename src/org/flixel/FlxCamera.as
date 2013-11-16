@@ -387,6 +387,12 @@ package org.flixel
 		{
 			target = Target;
 			
+			if (target == null)
+			{
+				deadzone = null;
+				return;
+			}
+			
 			switch(Style)
 			{
 				case STYLE_PLATFORMER:
@@ -401,11 +407,8 @@ package org.flixel
 					deadzone = new FlxRect((width-tdHelper)/2,(height-tdHelper)/2,tdHelper,tdHelper);
 					break;
 				case STYLE_LOCKON:
-					if (target != null) 
-					{	
-						var targetWidth:Number = target.width;
-						var targetHeight:Number = target.height;
-					}
+					var targetWidth:Number = target.width;
+					var targetHeight:Number = target.height;
 					deadzone = new FlxRect((width-targetWidth)/2,(height-targetHeight)/2 - targetHeight * 0.25,targetWidth,targetHeight);
 					break;
 				default:
