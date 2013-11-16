@@ -386,15 +386,13 @@ package org.flixel
 		public function follow(Target:FlxObject, Style:uint=STYLE_LOCKON):void
 		{
 			target = Target;
-			var w:Number = 0;
-			var h:Number = 0;
 			
 			switch(Style)
 			{
 				case STYLE_PLATFORMER:
-					w = width/8;
-					h = height/3;
-					deadzone = new FlxRect((width-w)/2,(height-h)/2 - h*0.25,w,h);
+					var cameraPaddingX:Number = width/8;
+					var cameraPaddingY:Number = height/3;
+					deadzone = new FlxRect((width-cameraPaddingX)/2,(height-cameraPaddingY)/2 - cameraPaddingY*0.25,cameraPaddingX,cameraPaddingY);
 					break;
 				case STYLE_TOPDOWN:
 				case STYLE_TOPDOWN_TIGHT:
@@ -405,10 +403,10 @@ package org.flixel
 				case STYLE_LOCKON:
 					if (target != null) 
 					{	
-						w = target.width;
-						h = target.height;
+						var targetWidth:Number = target.width;
+						var targetHeight:Number = target.height;
 					}
-					deadzone = new FlxRect((width-w)/2,(height-h)/2 - h * 0.25,w,h);
+					deadzone = new FlxRect((width-targetWidth)/2,(height-targetHeight)/2 - targetHeight * 0.25,targetWidth,targetHeight);
 					break;
 				default:
 					deadzone = null;
