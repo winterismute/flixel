@@ -409,7 +409,7 @@ package org.flixel
 				case STYLE_LOCKON:
 					var targetWidth:Number = target.width;
 					var targetHeight:Number = target.height;
-					deadzone = new FlxRect((width-targetWidth)/2,(height-targetHeight)/2 - targetHeight * 0.25,targetWidth,targetHeight);
+					deadzone = new FlxRect((width-targetWidth)/2,(height-targetHeight)/2,targetWidth,targetHeight);
 					break;
 				default:
 					deadzone = null;
