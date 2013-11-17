@@ -386,34 +386,34 @@ package org.flixel
 		public function follow(Target:FlxObject, Style:uint=STYLE_LOCKON):void
 		{
 			target = Target;
-			var helper:Number;
-			var w:Number = 0;
-			var h:Number = 0;
+			
+			if (target == null)
+			{
+				deadzone = null;
+				return;
+			}
 			
 			switch(Style)
 			{
 				case STYLE_PLATFORMER:
-					w = width/8;
-					h = height/3;
-					deadzone = new FlxRect((width-w)/2,(height-h)/2 - h*0.25,w,h);
+					var cameraPaddingX:Number = width/8;
+					var cameraPaddingY:Number = height/3;
+					deadzone = new FlxRect((width-cameraPaddingX)/2,(height-cameraPaddingY)/2 - cameraPaddingY*0.25,cameraPaddingX,cameraPaddingY);
 					break;
 				case STYLE_TOPDOWN:
-					helper = FlxU.max(width,height)/4;
-					deadzone = new FlxRect((width-helper)/2,(height-helper)/2,helper,helper);
-					break;
 				case STYLE_TOPDOWN_TIGHT:
-					helper = FlxU.max(width,height)/8;
-					deadzone = new FlxRect((width-helper)/2,(height-helper)/2,helper,helper);
+					var tdTightness:Number = (Style == STYLE_TOPDOWN_TIGHT) ? 8 : 4;
+					var tdHelper:Number = FlxU.max(width,height)/tdTightness;
+					deadzone = new FlxRect((width-tdHelper)/2,(height-tdHelper)/2,tdHelper,tdHelper);
 					break;
 				case STYLE_LOCKON:
-					if (target != null) 
-					{	
-						w = target.width;
-						h = target.height;
-					}
-					deadzone = new FlxRect((width-w)/2,(height-h)/2 - h * 0.25,w,h);
+					var targetWidth:Number = target.width;
+					var targetHeight:Number = target.height;
+					deadzone = new FlxRect((width-targetWidth)/2,(height-targetHeight)/2,targetWidth,targetHeight);
 					break;
 				default:
+					FlxG.log("[FlxCamera#follow()] WARNING: Invalid follow style of value: " + String(Style) + "'. Defaulting to centering on the target.");
+					target = null;
 					deadzone = null;
 					break;
 			}
